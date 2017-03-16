@@ -1,0 +1,14 @@
+---
+title: "GoldFundamentals"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../Functions/libs.R")
+source("../Functions/BaseFun.R")
+
+```
+
+
+# Popyt i podaż

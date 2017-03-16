@@ -1,0 +1,19 @@
+---
+title: "GoldTA"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../Functions/libs.R")
+source("../Functions/BaseFun.R")
+
+getSymbols("GOLD")
+
+```
+
+
+```{r}
+ chartSeries(GOLD)
+
+```
