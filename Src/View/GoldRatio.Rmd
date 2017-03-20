@@ -5,17 +5,128 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-source("../Functions/libs.R")
-source("../Functions/BaseFun.R")
-getStooq <- function(asset) {  as.url <- paste("http://stooq.com/q/d/l/?s=", asset, "&i=d", sep="")  as <- read.csv(as.url)  as$Date <- as.Date(as$Date)  as$Month <- format(as$Date, "%Y-%m")  return (as)}addNRow <- function(df) {  df$NRow <- 1:nrow(df);   return(df);}
 
-### GOLD or SILVERxag <- getStooq("xagpln")xau <- getStooq("xaupln")colSelect <- c("Date","Close")xau_xag <- inner_join(xag[, colSelect], xau[,colSelect], by = c("Date")) %>%     select (Date, xag = Close.x, xau = Close.y) %>%     mutate(xag.price = xag*1.23) %>%     mutate(xau.price = xau*1.04) %>%     mutate(ratio = xau / xag) %>%     mutate(ratio.price = xau.price / xag.price)hist2 <- function(x, length=40, adjust=1, ...) {    h <- hist(x,    ...,     xlab = "",    )    xfit<-seq(min(x),max(x),length=length)     yfit<-dnorm(xfit,mean=mean(x),sd=sd(x))     yfit <- yfit*diff(h$mids[1:2])*length(x)     lines(xfit, yfit, col="blue", lwd=2)      abline(v = last(x), col = "red",lwd = 2)    rug(x)} hist2(xau_xag$ratio)##### GOLD and USD Indexusdi <- getStooq("usd_i")xau <- getStooq("xauusd")xau_usdi<- inner_join(usdi[, colSelect], xau[,colSelect], by = c("Date")) %>%     select (Date, usdi = Close.x, xau = Close.y) %>%     mutate(xau_usdi= xau / usdi) %>%     mutate(usdi_xau = usdi /  xau  )hist2(xau_usdi$xau_usdi, main="Uncja zlota na 1 jednostke usdi")############## GOLD TO SPXspx <- getStooq("^spx")xau_spx<- inner_join(spx[, colSelect], xau[,colSelect], by = c("Date")) %>%     select (Date, spx = Close.x, xau = Close.y) %>%     mutate(xau_spx= xau / spx) %>%     mutate(spx_xau = spx /  xau  )plot(xau_spx$Date, xau_spx$spx_xau)hist2(xau_spx$spx_xau)############## GOLD TO DJIdji <-  getStooq("^DJI")xau_dji<- inner_join(dji[, colSelect], xau[,colSelect], by = c("Date")) %>%     select (Date, dji = Close.x, xau = Close.y) %>%     mutate(xau_dji= xau / dji) %>%     mutate(dji_xau = dji /  xau  )plot(xau_dji$Date, xau_dji$dji_xau)hist2(xau_dji$dji_xau)################## GOLD TO BERKSHIRE HATHAWAY (A class)brk <-  getStooq("brk-a.us")xau_brk<- inner_join(brk[, colSelect], xau[,colSelect], by = c("Date")) %>%     select (Date, brk = Close.x, xau = Close.y) %>%     mutate(xau_brk= xau / brk) %>%     mutate(brk_xau = brk /  xau  )plot(xau_brk$Date, xau_brk$brk_xau)hist2(xau_brk$brk_xau)################## GOLD TO Nikkei 225 - Japan (^NKX)nkx <-  getStooq("^NKX")xau_nkx<- inner_join(nkx[, colSelect], xau[,colSelect], by = c("Date")) %>%     select (Date, nkx = Close.x, xau = Close.y) %>%     mutate(xau_nkx= xau / nkx) %>%     mutate(nkx_xau = nkx /  xau  )plot(xau_nkx$Date, xau_nkx$nkx_xau)hist2(xau_nkx$nkx_xau)############## GOLD TO Shanghai Composite Index SHCshc <-  getStooq("^SHC")xau_shc<- inner_join(shc[, colSelect], xau[,colSelect], by = c("Date")) %>%     select (Date, shc = Close.x, xau = Close.y) %>%     mutate(xau_shc= xau / shc) %>%     mutate(shc_xau = shc /  xau  )plot(xau_shc$Date, xau_shc$shc_xau)hist2(xau_shc$shc_xau)############## GOLD TO CRB Commodity Index (^CRY)shc <-  getStooq("^SHC")xau_shc<- inner_join(shc[, colSelect], xau[,colSelect], by = c("Date")) %>%     select (Date, shc = Close.x, xau = Close.y) %>%     mutate(xau_shc= xau / shc) %>%     mutate(shc_xau = shc /  xau  )plot(xau_shc$Date, xau_shc$shc_xau)hist2(xau_shc$shc_xau)
 
-getRatio <- function(x, y, colSelect = c("Date","Close")){ ret <- inner_join(x[, colSelect], y[,colSelect], by = c("Date")) %>%     select (Date, x = Close.x, y = Close.y) %>%     mutate(ratio = x / y) %>%     mutate(ratio.inv = 1 / ratio )    return(ret)}xau <- getStooq("xaupln")wig20 <- getStooq("wig20")wigGor <- getStooq("WIG_GORNIC")xau_wig20 <- inner_join(xau[, colSelect], wig20[,colSelect], by = c("Date")) %>%     select (Date, xau = Close.x, wig20 = Close.y) %>%     mutate(ratio = xau / wig20) %>%     mutate(ratio.inv = wig20 / xau)xau_wigGor <- inner_join(xau[, colSelect], wigGor[,colSelect], by = c("Date")) %>%     select (Date, xau = Close.x, wigGor = Close.y) %>%     mutate(ratio = xau / wigGor) %>%     mutate(ratio.inv = 1 / ratio )///////////////////////library(xts)xau.xts <- xts(xau$Close, order.by=xau$Date) m <- xau.xts %>%  to.monthly(name="m")m.ts <- ts(m$m.Close, start = c(1984,1),  end=c(2017,1), frequency = 12)m.d <- decompose(m.ts)g.ts <- (GOLD %>% to.monthly)$..Closeg.ts2 <- ts(g.ts$..Close, start=c(2007, 1), end=c(2016, 12), frequency=12) g.d <- decompose(g.ts2)g.d$seasonal[1:12] %>% plot(type="l")
+
+### GOLD or SILVER
+xag <- getStooq("xagpln")
+xau <- getStooq("xaupln")
+
+xau_xag <- inner_join(xag[, colSelect], xau[,colSelect], by = c("Date")) %>% 
+  select (Date, xag = Close.x, xau = Close.y) %>% 
+  mutate(xag.price = xag*1.23) %>%
+  mutate(xau.price = xau*1.04) %>%
+  mutate(ratio = xau / xag) %>%
+  mutate(ratio.price = xau.price / xag.price)
+
+
+hist2(xau_xag$ratio)
+
+
+##### GOLD and USD Index
+usdi <- getStooq("usd_i")
+xau <- getStooq("xauusd")
+xau_usdi<- inner_join(usdi[, colSelect], xau[,colSelect], by = c("Date")) %>%
+  select (Date, usdi = Close.x, xau = Close.y) %>%
+  mutate(xau_usdi= xau / usdi) %>%
+  mutate(usdi_xau = usdi / xau )
+
+hist2(xau_usdi$xau_usdi, main="Uncja zlota na 1 jednostke usdi")
+  
+  ############## GOLD TO SPX
+spx <- getStooq("^spx")
+xau_spx<- inner_join(spx[, colSelect], xau[,colSelect], by = c("Date")) %>%
+  select (Date, spx = Close.x, xau = Close.y) %>%
+  mutate(xau_spx= xau / spx) %>%
+  mutate(spx_xau = spx /  xau  )
+
+plot(xau_spx$Date, xau_spx$spx_xau)
+
+hist2(xau_spx$spx_xau)
+  
+  ############## GOLD TO DJI
+dji <-  getStooq("^DJI")
+xau_dji<- inner_join(dji[, colSelect], xau[,colSelect], by = c("Date")) %>%
+  select (Date, dji = Close.x, xau = Close.y) %>%
+  mutate(xau_dji= xau / dji) %>%
+  mutate(dji_xau = dji /  xau  )
+plot(xau_dji$Date, xau_dji$dji_xau)
+
+hist2(xau_dji$dji_xau)
+  
+  ################## GOLD TO BERKSHIRE HATHAWAY (A class)
+
+brk <-  getStooq("brk-a.us")
+xau_brk<- inner_join(brk[, colSelect], xau[,colSelect], by = c("Date")) %>%
+  select (Date, brk = Close.x, xau = Close.y) %>%
+  mutate(xau_brk= xau / brk) %>%
+  mutate(brk_xau = brk /  xau  )
+
+plot(xau_brk$Date, xau_brk$brk_xau)
+
+hist2(xau_brk$brk_xau)
+  
+  ################## GOLD TO Nikkei 225 - Japan (^NKX)
+
+nkx <-  getStooq("^NKX")
+xau_nkx<- inner_join(nkx[, colSelect], xau[,colSelect], by = c("Date")) %>%
+  select (Date, nkx = Close.x, xau = Close.y) %>%
+  mutate(xau_nkx= xau / nkx) %>%
+  mutate(nkx_xau = nkx /  xau  )
+
+plot(xau_nkx$Date, xau_nkx$nkx_xau)
+
+hist2(xau_nkx$nkx_xau)
+  
+  ############## GOLD TO Shanghai Composite Index SHC
+shc <-  getStooq("^SHC")
+xau_shc<- inner_join(shc[, colSelect], xau[,colSelect], by = c("Date")) %>%
+  select (Date, shc = Close.x, xau = Close.y) %>%
+  mutate(xau_shc= xau / shc) %>%
+  mutate(shc_xau = shc /  xau  )
+
+plot(xau_shc$Date, xau_shc$shc_xau)
+
+hist2(xau_shc$shc_xau)
+  
+  ############## GOLD TO CRB Commodity Index (^CRY)
+
+shc <-  getStooq("^SHC")
+xau_shc<- inner_join(shc[, colSelect], xau[,colSelect], by = c("Date")) %>%
+  select (Date, shc = Close.x, xau = Close.y) %>%
+  mutate(xau_shc= xau / shc) %>%
+  mutate(shc_xau = shc /  xau  )
+
+plot(xau_shc$Date, xau_shc$shc_xau)
+
+hist2(xau_shc$shc_xau)
+
+
+xau <- getStooq("xaupln")
+wig20 <- getStooq("wig20")
+wigGor <- getStooq("WIG_GORNIC")
+xau_wig20 <- inner_join(xau[, colSelect], wig20[,colSelect], by = c("Date")) %>%
+  select (Date, xau = Close.x, wig20 = Close.y) %>%
+  mutate(ratio = xau / wig20) %>%
+  mutate(ratio.inv = wig20 / xau)
+xau_wigGor <- inner_join(xau[, colSelect], wigGor[,colSelect], by = c("Date")) %>%
+  select (Date, xau = Close.x, wigGor = Close.y) %>%
+  mutate(ratio = xau / wigGor) %>%
+  mutate(ratio.inv = 1 / ratio )
+
+
+#///////////////////////
+
+xau.xts <- xts(xau$Close, order.by=xau$Date) 
+m <- xau.xts %>%
+  to.monthly(name="m")
+
+m.ts <- ts(m$m.Close, start = c(1984,1),  end=c(2017,1), frequency = 12)
+m.d <- decompose(m.ts)
+g.ts <- (GOLD %>% to.monthly)$..Closeg.ts2 <- ts(g.ts$..Close, start=c(2007, 1), end=c(2016, 12), frequency=12) 
+g.d <- decompose(g.ts2)
+g.d$seasonal[1:12] %>% plot(type="l")
 ```
 
 
 
-```{r}
-sayHello()
-```
