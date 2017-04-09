@@ -1,5 +1,5 @@
 ---
-title: "GoldFundamentals"
+title: "Fundamenty na złocie"
 output: html_document
 ---
 

@@ -1,17 +1,38 @@
 ---
-title: "GoldTA"
+title: "Analiza techniczna złota"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+setwd("../..")
+source("./Src/Functions/ref.R")
 
-getSymbols("GOLD")
+g <- getSymbols("GOLD")
 
+gold.first <- first(GOLD)
 ```
 
+## Kurs złota
 
 ```{r}
- chartSeries(GOLD)
-
+ chartSeries(GOLD,theme=chartTheme('white'), type="line" ,TA=NULL)
+setTA()
 ```
+
+## MACD
+
+```{r}
+addMACD()
+```
+
+
+
+## Bollinger Bands
+```{r}
+addBBands()
+#setTA()
+```
+
+
+

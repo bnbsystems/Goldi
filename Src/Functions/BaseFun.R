@@ -1,9 +1,31 @@
 getStooq <- function(asset) {
-  as.url <- paste("http://stooq.com/q/d/l/?s=", asset, "&i=d", sep="")
-  as <- read.csv(as.url)
-  as$Date <- as.Date(as$Date)
-  as$Month <- format(as$Date, "%Y-%m")
-  return (as)
+  as.url <- paste0("http://stooq.com/q/d/l/?s=", asset, "&i=d")
+  as.dir <- file.path(".","tempData")
+  if(!dir.exists(as.dir))
+  {
+    dir.create(as.dir)
+  }
+  as.fileName <- paste0(asset, ".csv")
+  as.file<- file.path(as.dir,as.fileName)
+  
+  if(file.exists(as.file) & file.size(as.file) >0) 
+  {
+    sprintf("file exist %s", as.file)
+    ret <- read.csv(file=as.file, strip.white = T)
+    ret$Date <- as.Date(ret$Date)
+  }else
+  {
+    u <- getURI(as.url, ssl.verifypeer=0L, followlocation=1L)
+    ret <- read.csv(text=u)
+    ret$Date <- as.Date(ret$Date)
+    write.csv(ret, file = as.file)
+  }
+  #download.file(url=as.url, destfile = as.file)
+
+  #ret$Month <- format(ret$Date, "%Y-%m")
+  
+  
+  return (ret)
 }
 
 addNRow <- function(df) {
@@ -18,7 +40,7 @@ inner_join_stooq <- function (x, y,  colSelect =c("Date","Close")) {
     mutate(ratio = x / y) %>%
     mutate(ratio.rev = 1 / ratio)
 
-return (ret)
+  return (ret)
 }
 
 hist2 <- function(x, length=40, adjust=1, ...) {
