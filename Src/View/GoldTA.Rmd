@@ -17,22 +17,215 @@ gold.first <- first(GOLD)
 
 ```{r}
  chartSeries(GOLD,theme=chartTheme('white'), type="line" ,TA=NULL)
-setTA()
 ```
+
+# Bazując na średniej kroczącej
 
 ## MACD
 
-```{r}
+```{r echo=F}
+reChart()
 addMACD()
 ```
 
 
 
+
 ## Bollinger Bands
-```{r}
+```{r echo=F}
+reChart()
 addBBands()
 #setTA()
 ```
 
 
 
+
+## Welles Wilder's Directional Movement Indicator
+```{r echo=F}
+reChart()
+addADX()
+```
+
+## Average True Range 
+```{r echo=F}
+addATR()
+```
+
+
+##  Aroon Indicator 
+```{r echo=F}
+addAroon()
+```
+
+## Aroon Oscillator 
+```{r echo=F}
+addAroonOsc()
+```
+
+## Commodity Channel Index 
+```{r echo=F}
+addCCI()
+```
+
+# Chaiken
+
+## Chaiken Money Flow 
+```{r echo=F}
+addCMF()
+```
+
+## Chaiken Accumulation Distribution Line 
+```{r echo=F}
+addChAD()
+```
+
+## Chaiken Volatility 
+```{r echo=F}
+addChVol()
+```
+
+## Chande Momentum Oscillator 
+```{r echo=F}
+addCMO()
+```
+
+
+## Double Exponential Moving Average
+```{r echo=F}
+addDEMA()
+```
+
+
+
+##  Detrended Price Oscillator 
+```{r echo=F}
+addDPO()
+```
+
+## Exponential Moving Average
+```{r echo=F}
+addEMA()
+```
+
+## Arm's Ease of Movement
+```{r echo=F}
+addEMV()
+```
+
+## Moving Average Envelope 
+```{r echo=F}
+addEnvelope()
+```
+
+## Exponential Volume Weighted Moving Average  
+```{r echo=F}
+addEVWMA()
+```
+
+## options or futures expiration lines
+```{r echo=F}
+addExpiry()
+```
+
+
+
+
+## Know Sure Thing 
+```{r echo=F}
+addKST()
+```
+
+## Lines
+```{r echo=F}
+addLines()
+```
+
+## Moving Average Convergence Divergence
+```{r echo=F}
+chartSeries(GOLD,theme=chartTheme('white'), type="line" ,TA=NULL)
+addMACD()
+```
+
+## Money Flow Index 
+```{r echo=F}
+addMFI()
+```
+
+
+## Momentum 
+```{r echo=F}
+addMomentum()
+```
+
+## On-Balance Volume 
+```{r echo=F}
+addOBV()
+```
+
+
+## Points
+```{r echo=F}
+#addPoints()
+```
+
+## Rate of Change
+```{r echo=F}
+addROC()
+```
+
+## Relative Strength Indicator 
+```{r echo=F}
+addRSI()
+```
+## Parabolic SAR 
+```{r echo=F}
+addSAR()
+```
+## Simple Moving Average
+```{r echo=F}
+addSMA()
+```
+## Stochastic Momentum Index
+```{r echo=F}
+addSMI()
+```
+## Trend Direction Index 
+```{r echo=F}
+addTDI()
+```
+
+##  Triple Smoothed Exponential Oscillator 
+```{r echo=F}
+addTRIX()
+```
+
+## Volume
+```{r echo=F}
+addVo()
+```
+
+## volatility
+```{r echo=F}
+addVolatility()
+```
+
+## Weighted Moving Average 
+```{r echo=F}
+addWMA()
+```
+
+
+## Williams Percent R 
+```{r echo=F}
+addWPR()
+```
+
+##  Zig Zag
+```{r echo=F}
+addZigZag()
+```
+## ZLEMA
+```{r echo=F}
+addZLEMA()
+```

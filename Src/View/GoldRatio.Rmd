@@ -35,9 +35,7 @@ hist2(xau_xag$ratio)
 
 ```
 
-##### GOLD and USD Index
-
-
+## Jak złoto zachowuje się w relacji do Indexu Dolara (USDI)
 
 ```{r}
 
@@ -50,8 +48,8 @@ hist2(xau_usdi$xau_usdi, main="Uncja zlota na 1 jednostke usdi")
   
 ```
 
-  ############## GOLD TO SPX
-
+## Jaka jest relacja złota do indexów giełdowych w USA
+### S&P500
 ```{r}
 xau_spx<- inner_join(spx[, colSelect], xau[,colSelect], by = c("Date")) %>%
   select (Date, spx = Close.x, xau = Close.y) %>%
@@ -64,7 +62,8 @@ hist2(xau_spx$spx_xau)
  
 
 ``` 
-  ############## GOLD TO DJI
+
+###DJI
 
 ```{r}
 xau_dji<- inner_join(dji[, colSelect], xau[,colSelect], by = c("Date")) %>%
@@ -76,7 +75,9 @@ plot(xau_dji$Date, xau_dji$dji_xau)
 hist2(xau_dji$dji_xau)
   
 ``` 
- ################## GOLD TO BERKSHIRE HATHAWAY (A class)
+ 
+ 
+## Kurs złota do akcji "najlepszego inwestora"" (BERKSHIRE HATHAWAY - A class)
 
 ```{r}
 brk <-  getStooq("brk-a.us")
@@ -90,7 +91,9 @@ plot(xau_brk$Date, xau_brk$brk_xau)
 hist2(xau_brk$brk_xau)
   
 ```
-  ################## GOLD TO Nikkei 225 - Japan (^NKX)
+
+## Kurs złoto w relacji do innych indexów giełdowych 
+### Nikkei 225 - Japan (^NKX)
 
 ```{r}
 nkx <-  getStooq("^NKX")
@@ -103,13 +106,14 @@ plot(xau_nkx$Date, xau_nkx$nkx_xau)
 
 hist2(xau_nkx$nkx_xau)
 ```
-  ############## GOLD TO Shanghai Composite Index SHC
+
+### Shanghai Composite Index SHC
 ```{r}
-shc <-  getStooq("^SHC")
+shc <- getStooq("^SHC")
 xau_shc<- inner_join(shc[, colSelect], xau[,colSelect], by = c("Date")) %>%
   select (Date, shc = Close.x, xau = Close.y) %>%
   mutate(xau_shc= xau / shc) %>%
-  mutate(shc_xau = shc /  xau  )
+  mutate(shc_xau = shc / xau )
 
 plot(xau_shc$Date, xau_shc$shc_xau)
 
@@ -117,7 +121,11 @@ hist2(xau_shc$shc_xau)
   
 
 ```
-  ############## GOLD TO CRB Commodity Index (^CRY)
+  
+## Kurs indexów surowcowych
+### CRB Commodity Index (^CRY)
+
+
 ```{r}
 shc <-  getStooq("^SHC")
 xau_shc<- inner_join(shc[, colSelect], xau[,colSelect], by = c("Date")) %>%
@@ -128,6 +136,16 @@ xau_shc<- inner_join(shc[, colSelect], xau[,colSelect], by = c("Date")) %>%
 plot(xau_shc$Date, xau_shc$shc_xau)
 
 hist2(xau_shc$shc_xau)
+
+
+```
+
+  
+## Kurs złota do polskich indexów giełdowych
+### 
+
+
+```{r}
 
 
 xau <- getStooq("xaupln")
@@ -143,3 +161,4 @@ xau_wigGor <- inner_join(xau[, colSelect], wigGor[,colSelect], by = c("Date")) %
   mutate(ratio = xau / wigGor) %>%
   mutate(ratio.inv = 1 / ratio )
 
+```

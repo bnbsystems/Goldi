@@ -5,6 +5,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+setwd("../..")
 source("./Src/Functions/ref.R")
 
 GoldDemandTrends.url <- "http://www.gold.org/download/file/5471/gdt-fy-2016-statistics.xls";
@@ -43,3 +44,15 @@ colnames(gdt.officialHoldings)[1] <- "Country";
 
 
 ```
+
+## Czy więcej jest popytu czy podaży ?
+## Jakie kraje wziększają rezerwę złota a jakie obniżają
+
+## Jak zwiększa się zapotrzebowanie na złoto przez konsumentów
+
+## Jakie jest zapotrzebowanie na złote monety bulionowe
+
+## W jakich sektorach jest wzrost zapotrzebowania na złoto?
+
+
+
