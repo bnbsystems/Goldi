@@ -8,95 +8,84 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("../..")
 source("./Src/Functions/ref.R")
 
-xagusd <- getStooq("xagusd")
-xauusd <- getStooq("xauusd")
-usdi <- getStooq("usd_i")
-spx <- getStooq("^spx")
-dji <- getStooq("^DJI")
-brk <-  getStooq("brk-a.us")
-xaupln <- getStooq("xaupln")
-wigGor <- getStooq("WIG_GORNIC")
-wig20 <- getStooq("wig20")
-cry <-  getStooq("^CRY")
-shc <- getStooq("^SHC")
 ```
 
 ## Kiedy kupować złota, a kiedy srebro
 
 
-```{r echo=F}
+```{r, echo=F}
 xau_xag <- inner_join_stooq(xauusd, xagusd)
-hist2(xau_xag$ratio)
+hist2(xau_xag, name="Złoto/Srebro")
 
 ```
 
 ## Jak złoto zachowuje się w relacji do Indexu Dolara (USDI)
 
-```{r}
+```{r, echo=F}
 xau_usdi <- inner_join_stooq(xauusd, usdi)
-hist2(xau_usdi$ratio, main="Uncja zlota na 1 jednostke usdi")
+hist2(xau_usdi, name="Złoto/USDI")
   
 ```
 
 ## Jaka jest relacja złota do indexów giełdowych w USA
 ### S&P500
-```{r}
+```{r, echo=F}
 xau_spx <- inner_join_stooq(xauusd, spx)
-hist2(xau_spx$ratio)
+hist2(xau_spx, "ratio.rev", name="S&P500/Złoto")
  
 
 ``` 
 
 ###DJI
 
-```{r}
+```{r, echo=F}
 xau_dji <- inner_join_stooq(xauusd, dji)
-hist2(xau_dji$ratio)
+hist2(xau_dji, "ratio.rev", name="DJI/Złoto")
   
 ``` 
  
  
 ## Kurs złota do akcji "najlepszego inwestora"" (BERKSHIRE HATHAWAY - A class)
 
-```{r}
+```{r, echo=F}
 xau_brk <- inner_join_stooq(xauusd, brk)
-hist2(xau_brk$ratio)
+hist2(xau_brk, "ratio.rev", name="BERKSHIRE HATHAWAY/Złoto")
 ```
 
 ## Kurs złoto w relacji do innych indexów giełdowych 
 ### Nikkei 225 - Japan (^NKX)
 
-```{r}
-nkx <-  getStooq("^NKX")
+```{r, echo=F}
 xau_nkx <- inner_join_stooq(xauusd, nkx)
-hist2(xau_nkx$ratio)
+hist2(xau_nkx, "ratio.rev", name="NIKKEI225/Złoto")
 ```
 
 ### Shanghai Composite Index SHC
-```{r}
+```{r, echo=F}
 xau_shc <- inner_join_stooq(xauusd, shc)
-hist2(xau_shc$ratio)
+hist2(xau_shc, "ratio.rev", name="Shanghai/Złoto")
 ```
   
 ## Kurs indexów surowcowych
 ### CRB Commodity Index (^CRY)
 
 
-```{r}
+```{r, echo=F}
 xau_cry <- inner_join_stooq(xauusd, cry)
-hist2(xau_cry$ratio)
+hist2(xau_cry, "ratio.rev", name="CRB/Złoto")
 ```
 
   
 ## Kurs złota do polskiej giełdy
 ###  WIG 20
 
-```{r}
+```{r, echo=F}
 xau_wig20 <- inner_join_stooq(xauusd, wig20)
-hist2(xau_wig20$ratio)
+hist2(xau_wig20, "ratio.rev", name="WIG20/Złoto")
 ```
-###  WIG Górnictwo
-```{r}
+
+### WIG Górnictwo
+```{r, echo=F}
 xau_wigGor <- inner_join_stooq(xauusd, wigGor)
-hist2(xau_wigGor$ratio)
+hist2(xau_wigGor, "ratio.rev", name="WIG-Górnictwo/Złoto")
 ```

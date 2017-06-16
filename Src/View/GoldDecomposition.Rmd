@@ -8,13 +8,18 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("../..")
 source("./Src/Functions/ref.R")
 
-endScope <- c(2017, 3)
 xaupln.xts <- xts(xaupln$Close, order.by = xaupln$Date)
 xaupln.xts.m <- xaupln.xts %>% to.monthly(name = "m")
 xaupln.ts <- ts(Cl(xaupln.xts.m['1984-01/']), start = c(1984, 1), end = endScope, frequency = 12)
 xaupln.ts.d <- decompose(xaupln.ts)
 xaupln.short.ts <- ts(Cl(xaupln.xts.m['2012-01/']), start = c(2012, 1), end = endScope, frequency = 12)
 xaupln.short.ts.d <- decompose(xaupln.short.ts)
+
+xaupln.opcl.ts <- ts(OpCl(xaupln.xts.m['1984-01/']), start = c(1984, 1), end = endScope, frequency = 12)
+xaupln.opcl.ts.d <- decompose(xaupln.ts)
+xaupln.short.opcl.ts <- ts(OpCl(xaupln.xts.m['2012-01/']), start = c(2012, 1), end = endScope, frequency = 12)
+xaupln.short.opcl.ts.d <- decompose(xaupln.short.ts)
+
 
 xauusd.xts <- xts(xauusd$Close, order.by = xauusd$Date)
 xauusd.xts.m <- xauusd.xts %>% to.monthly(name = "m")
@@ -29,38 +34,49 @@ xauusd.opcl.ts.d <- decompose(xauusd.opcl.ts)
 xauusd.short.opcl.ts <- ts(OpCl(xauusd.xts.m['2012-01/']), start = c(2012, 1), end = endScope, frequency = 12)
 xauusd.short.opcl.ts.d <- decompose(xauusd.short.opcl.ts)
 
-
-
-```
-
-## Jak wygląda dekompozycja?
-```{r setup, include=FALSE}
-plot(xaupln.ts.d)
-plot(xauusd.ts.d)
 ```
 
 
 ## Jaki jest trend długoterminowy?
-```{r}
+###  PLN
+```{r, echo=F}
 plot(xaupln.ts.d$trend)
+```
+
+###  USD
+```{r, echo=F}
 plot(xauusd.ts.d$trend)
 ```
+
 ## Jaki jest trend krótkoterminowy?
-```{r}
+###  PLN
+```{r, echo=F}
 plot(xaupln.short.ts.d$trend)
+```
+
+### USD
+```{r, echo=F}
 plot(xauusd.short.ts.d$trend)
 ```
 
-## W jakim miesiącu najlepiej jest kupić/sprzedać w okresie długoterminowym?
-```{r}
+## W jakim miesiącu najlepiej dokonać tranzakcji w okresie długoterminowym?
+### PLN
+```{r, echo=F}
 xaupln.opcl.ts.d$seasonal[1:12] %>% plot(type = "l")
-xauusd.opcl.ts.d$seasonal[1:12] %>% plot(type = "l")
-
 ```
 
-## W jakim miesiącu najlepiej jest kupić/sprzedać w okresie krótkoterminowym?
-```{r}
-xaupln.short.opcl.ts.d$seasonal[1:12] %>% plot(type = "l")
-xauusd.short.opcl.ts.d$seasonal[1:12] %>% plot(type = "l")
+### USD
+```{r, echo=F}
+xauusd.opcl.ts.d$seasonal[1:12] %>% plot(type = "l")
+```
 
+## W jakim miesiącu najlepiej dokonać tranzakcji w okresie krótkoterminowym?
+### PLN
+```{r, echo=F}
+xaupln.short.opcl.ts.d$seasonal[1:12] %>% plot(type = "l")
+```
+
+### USD
+```{r, echo=F}
+xauusd.short.opcl.ts.d$seasonal[1:12] %>% plot(type = "l")
 ```
