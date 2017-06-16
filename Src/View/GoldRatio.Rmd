@@ -9,28 +9,19 @@ setwd("../..")
 source("./Src/Functions/ref.R")
 
 colSelect <- c("Date", "Close")
-xag <- getStooq("xagpln")
-xau <- getStooq("xaupln")
+xagusd <- getStooq("xagusd")
+xauusd <- getStooq("xauusd")
 usdi <- getStooq("usd_i")
-xau <- getStooq("xauusd")
 spx <- getStooq("^spx")
 dji <- getStooq("^DJI")
 
 ```
 
-## Kiedy kupować złota a kiedy srebro
+## Kiedy kupować złota, a kiedy srebro
 
 
 ```{r echo=F}
-xau_xag <- inner_join(xag[, colSelect], xau[,colSelect], by = c("Date")) %>% 
-  select (Date, xag = Close.x, xau = Close.y) %>% 
-  mutate(xag.price = xag*1.23) %>%
-  mutate(xau.price = xau*1.04) %>%
-  mutate(ratio = xau / xag) %>%
-  mutate(ratio.price = xau.price / xag.price)
-
-
-#plot(xau_xag$ratio)
+xau_xag <- inner_join_stooq(xauusd, xagusd)
 hist2(xau_xag$ratio)
 
 ```
@@ -38,12 +29,7 @@ hist2(xau_xag$ratio)
 ## Jak złoto zachowuje się w relacji do Indexu Dolara (USDI)
 
 ```{r}
-
-xau_usdi<- inner_join(usdi[, colSelect], xau[,colSelect], by = c("Date")) %>%
-  select (Date, usdi = Close.x, xau = Close.y) %>%
-  mutate(xau_usdi= xau / usdi) %>%
-  mutate(usdi_xau = usdi / xau )
-
+xau_usdi <- inner_join_stooq(xauusd, usdi)
 hist2(xau_usdi$xau_usdi, main="Uncja zlota na 1 jednostke usdi")
   
 ```
@@ -51,10 +37,7 @@ hist2(xau_usdi$xau_usdi, main="Uncja zlota na 1 jednostke usdi")
 ## Jaka jest relacja złota do indexów giełdowych w USA
 ### S&P500
 ```{r}
-xau_spx<- inner_join(spx[, colSelect], xau[,colSelect], by = c("Date")) %>%
-  select (Date, spx = Close.x, xau = Close.y) %>%
-  mutate(xau_spx= xau / spx) %>%
-  mutate(spx_xau = spx /  xau  )
+xau_spx <- inner_join_stooq(xauusd, spx)
 
 plot(xau_spx$Date, xau_spx$spx_xau)
 
