@@ -8,17 +8,40 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("../..")
 source("./Src/Functions/ref.R")
 
+endScope <- c(2017, 3)
+xaupln.xts <- xts(xaupln$Close, order.by = xaupln$Date)
+xaupln.xts.m <- xaupln.xts %>% to.monthly(name = "m")
+xaupln.ts <- ts(OpCl(xaupln.xts.m), start = c(1984, 1), end = endScope, frequency = 12)
+xaupln.ts.d <- decompose(xaupln.ts)
+xaupln.short.ts <- ts(OpCl(xaupln.xts.m['2012-01/']), start = c(2012, 1), end = endScope, frequency = 12)
+xaupln.short.ts.d <- decompose(xaupln.short.ts)
+
+
+
 ```
 
 ## Jak wygląda dekompozycja?
+```{r setup, include=FALSE}
+plot(xaupln.ts.d)
+```
+
 
 ## Jaki jest trend długoterminowy?
+```{r}
+plot(xaupln.ts.d$trend)
+```
 ## Jaki jest trend krótkoterminowy?
-
+```{r}
+plot(xaupln.short.ts.d$trend)
+```
 
 ## W jakim miesiącu najlepiej jest kupić/sprzedać w okresie długoterminowym?
-
+```{r}
+xaupln.ts.d$seasonal[1:12] %>% plot(type = "l")
+```
 
 ## W jakim miesiącu najlepiej jest kupić/sprzedać w okresie krótkoterminowym?
-
+```{r}
+xaupln.short.ts.d$seasonal[1:12] %>% plot(type = "l")
+```
 
