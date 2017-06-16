@@ -8,13 +8,17 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("../..")
 source("./Src/Functions/ref.R")
 
-colSelect <- c("Date", "Close")
 xagusd <- getStooq("xagusd")
 xauusd <- getStooq("xauusd")
 usdi <- getStooq("usd_i")
 spx <- getStooq("^spx")
 dji <- getStooq("^DJI")
-
+brk <-  getStooq("brk-a.us")
+xaupln <- getStooq("xaupln")
+wigGor <- getStooq("WIG_GORNIC")
+wig20 <- getStooq("wig20")
+cry <-  getStooq("^CRY")
+shc <- getStooq("^SHC")
 ```
 
 ## Kiedy kupować złota, a kiedy srebro
@@ -30,7 +34,7 @@ hist2(xau_xag$ratio)
 
 ```{r}
 xau_usdi <- inner_join_stooq(xauusd, usdi)
-hist2(xau_usdi$xau_usdi, main="Uncja zlota na 1 jednostke usdi")
+hist2(xau_usdi$ratio, main="Uncja zlota na 1 jednostke usdi")
   
 ```
 
@@ -38,10 +42,7 @@ hist2(xau_usdi$xau_usdi, main="Uncja zlota na 1 jednostke usdi")
 ### S&P500
 ```{r}
 xau_spx <- inner_join_stooq(xauusd, spx)
-
-plot(xau_spx$Date, xau_spx$spx_xau)
-
-hist2(xau_spx$spx_xau)
+hist2(xau_spx$ratio)
  
 
 ``` 
@@ -49,13 +50,8 @@ hist2(xau_spx$spx_xau)
 ###DJI
 
 ```{r}
-xau_dji<- inner_join(dji[, colSelect], xau[,colSelect], by = c("Date")) %>%
-  select (Date, dji = Close.x, xau = Close.y) %>%
-  mutate(xau_dji= xau / dji) %>%
-  mutate(dji_xau = dji /  xau  )
-plot(xau_dji$Date, xau_dji$dji_xau)
-
-hist2(xau_dji$dji_xau)
+xau_dji <- inner_join_stooq(xauusd, dji)
+hist2(xau_dji$ratio)
   
 ``` 
  
@@ -63,16 +59,8 @@ hist2(xau_dji$dji_xau)
 ## Kurs złota do akcji "najlepszego inwestora"" (BERKSHIRE HATHAWAY - A class)
 
 ```{r}
-brk <-  getStooq("brk-a.us")
-xau_brk<- inner_join(brk[, colSelect], xau[,colSelect], by = c("Date")) %>%
-  select (Date, brk = Close.x, xau = Close.y) %>%
-  mutate(xau_brk= xau / brk) %>%
-  mutate(brk_xau = brk /  xau  )
-
-plot(xau_brk$Date, xau_brk$brk_xau)
-
-hist2(xau_brk$brk_xau)
-  
+xau_brk <- inner_join_stooq(xauusd, brk)
+hist2(xau_brk$ratio)
 ```
 
 ## Kurs złoto w relacji do innych indexów giełdowych 
@@ -80,29 +68,14 @@ hist2(xau_brk$brk_xau)
 
 ```{r}
 nkx <-  getStooq("^NKX")
-xau_nkx<- inner_join(nkx[, colSelect], xau[,colSelect], by = c("Date")) %>%
-  select (Date, nkx = Close.x, xau = Close.y) %>%
-  mutate(xau_nkx= xau / nkx) %>%
-  mutate(nkx_xau = nkx /  xau  )
-
-plot(xau_nkx$Date, xau_nkx$nkx_xau)
-
-hist2(xau_nkx$nkx_xau)
+xau_nkx <- inner_join_stooq(xauusd, nkx)
+hist2(xau_nkx$ratio)
 ```
 
 ### Shanghai Composite Index SHC
 ```{r}
-shc <- getStooq("^SHC")
-xau_shc<- inner_join(shc[, colSelect], xau[,colSelect], by = c("Date")) %>%
-  select (Date, shc = Close.x, xau = Close.y) %>%
-  mutate(xau_shc= xau / shc) %>%
-  mutate(shc_xau = shc / xau )
-
-plot(xau_shc$Date, xau_shc$shc_xau)
-
-hist2(xau_shc$shc_xau)
-  
-
+xau_shc <- inner_join_stooq(xauusd, shc)
+hist2(xau_shc$ratio)
 ```
   
 ## Kurs indexów surowcowych
@@ -110,38 +83,20 @@ hist2(xau_shc$shc_xau)
 
 
 ```{r}
-shc <-  getStooq("^SHC")
-xau_shc<- inner_join(shc[, colSelect], xau[,colSelect], by = c("Date")) %>%
-  select (Date, shc = Close.x, xau = Close.y) %>%
-  mutate(xau_shc= xau / shc) %>%
-  mutate(shc_xau = shc /  xau  )
-
-plot(xau_shc$Date, xau_shc$shc_xau)
-
-hist2(xau_shc$shc_xau)
-
-
+xau_cry <- inner_join_stooq(xauusd, cry)
+hist2(xau_cry$ratio)
 ```
 
   
-## Kurs złota do polskich indexów giełdowych
-### 
-
+## Kurs złota do polskiej giełdy
+###  WIG 20
 
 ```{r}
-
-
-xau <- getStooq("xaupln")
-wig20 <- getStooq("wig20")
-wigGor <- getStooq("WIG_GORNIC")
-xau_wig20 <- inner_join(xau[, colSelect], wig20[,colSelect], by = c("Date")) %>%
-  select (Date, xau = Close.x, wig20 = Close.y) %>%
-  mutate(ratio = xau / wig20) %>%
-  mutate(ratio.inv = wig20 / xau)
-
-xau_wigGor <- inner_join(xau[, colSelect], wigGor[,colSelect], by = c("Date")) %>%
-  select (Date, xau = Close.x, wigGor = Close.y) %>%
-  mutate(ratio = xau / wigGor) %>%
-  mutate(ratio.inv = 1 / ratio )
-
+xau_wig20 <- inner_join_stooq(xauusd, wig20)
+hist2(xau_wig20$ratio)
+```
+###  WIG Górnictwo
+```{r}
+xau_wigGor <- inner_join_stooq(xauusd, wigGor)
+hist2(xau_wigGor$ratio)
 ```
